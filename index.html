@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 Kebiasaan Anak Indonesia Hebat</title>
+    
+    <!-- Mencegah error favicon.ico di browser -->
+    <link rel="shortcut icon" href="#">
+
+    <!-- FontAwesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS (XLSX) untuk Import & Export Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- STYLESHEET (CSS) -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7fe;
+            color: #2b3674;
+        }
+
+        /* Modal Login & Overlay */
+        .login-modal, .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(17, 28, 68, 0.85);
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .login-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .login-card h2 {
+            color: #4318ff;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .login-card p {
+            color: #707ebe;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e5f2;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #4318ff;
+        }
+
+        /* Layout Utama */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Overlay (Mobile) */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 270px;
+            background: #ffffff;
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            color: #4318ff;
+            margin-bottom: 20px;
+        }
+
+        .user-profile-summary {
+            background: #f4f7fe;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .profile-avatar-container {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            overflow: hidden;
+            border: 3px solid #4318ff;
+            background: #e0e5f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #4318ff;
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: #707ebe;
+            text-decoration: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #4318ff;
+            color: #ffffff;
+        }
+
+        .btn-logout {
+            margin-top: 15px;
+            padding: 12px;
+            border: none;
+            background: #ffecec;
+            color: #ee5d50;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-logout:hover {
+            background: #ffd5d5;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #2b3674;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Tombol - Tombol Akses */
+        .btn-primary {
+            background: #4318ff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: #3311cc;
+        }
+
+        .btn-success {
+            background: #01b574;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success:hover {
+            background: #009660;
+        }
+
+        .btn-warning {
+            background: #ffb547;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-info {
+            background: #00b5d8;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger {
+            background: #ee5d50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger:hover { background: #e03e2e; }
+
+        /* Stats Grid & Table */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.02);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: #f4f7fe;
+            color: #4318ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #e0e5f2;
+            font-size: 0.92rem;
+        }
+
+        .custom-table th {
+            background-color: #f8fbff;
+            color: #2b3674;
+            font-weight: 600;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Area Cetak / Print Header */
+        .print-header {
+            display: none;
+        }
+
+        /* Style Khusus Tabel Hasil Cetak Jurnal */
+        .print-journal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-top: 8px;
+        }
+
+        .print-journal-table th, .print-journal-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #000;
+        }
+
+        .print-journal-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Style Kartu Login Siswa (Grid Print) */
+        .cards-grid-print {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .siswa-card-box {
+            border: 2px solid #4318ff;
+            border-radius: 10px;
+            padding: 12px;
+            background: #fff;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .siswa-card-box h4 {
+            color: #4318ff;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #e0e5f2;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .siswa-card-box table {
+            width: 100%;
+            font-size: 0.85rem;
+        }
+
+        .siswa-card-box table td {
+            padding: 3px 0;
+            border: none;
+        }
+
+        @media print {
+            .sidebar, .top-bar, .btn-primary, .btn-success, .btn-danger, .btn-warning, .btn-info, form, .no-print {
+                display: none !important;
+            }
+            .main-content {
+                padding: 0;
+            }
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            .print-header {
+                display: flex !important;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                border-bottom: 3px double #000;
+                padding-bottom: 10px;
+            }
+            .print-header img {
+                max-height: 80px;
+                width: auto;
+            }
+            .print-header .header-text {
+                text-align: center;
+                flex-grow: 1;
+                padding: 0 10px;
+            }
+            .print-header h2 {
+                font-size: 1.4rem;
+                color: #000;
+                margin-bottom: 4px;
+            }
+            .print-header p {
+                font-size: 0.85rem;
+                color: #000;
+            }
+            .print-journal-table th {
+                background-color: #e0e0e0 !important;
+                -webkit-print-color-adjust: exact;
+            }
+            .cards-grid-print {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .siswa-card-box {
+                border: 1.5px solid #000 !important;
+                page-break-inside: avoid;
+            }
+            .siswa-card-box h4 {
+                color: #000 !important;
+                border-bottom-color: #000 !important;
+            }
+        }
+
+        /* Perbaikan Tampilan Sidebar Khusus Layar Mobil / HP */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -270px;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .sidebar.show {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MODAL LOGIN -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-graduation-cap"></i> Portal Masuk</h2>
+            <p>Aplikasi 7 Kebiasaan Anak Indonesia Hebat</p>
+            
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="roleSelect">Masuk Sebagai:</label>
+                    <select id="roleSelect">
+                        <option value="admin">Admin Sekolah</option>
+                        <option value="guru">Guru</option>
+                        <option value="siswa" selected>Siswa</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="usernameInput" id="labelUsername">NISN Siswa:</label>
+                    <input type="text" id="usernameInput" placeholder="Masukkan NISN / ID..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordInput">Password:</label>
+                    <input type="password" id="passwordInput" placeholder="Masukkan password..." required>
+                </div>
+
+                <!-- Tombol Lupa Password Admin -->
+                <div id="forgotPasswordContainer" style="display: none; text-align: right; margin-top: -8px; margin-bottom: 12px;">
+                    <a href="javascript:void(0)" onclick="window.modalLupaPasswordAdmin()" style="color: #4318ff; font-size: 0.85rem; text-decoration: none; font-weight: 600;">Lupa Password Admin?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 5px; padding: 12px; font-size: 1rem; justify-content: center;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk Aplikasi
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT SISWA (OLEH ADMIN/GURU) -->
+    <div id="editSiswaModal" class="login-modal" style="display: none !important;">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-user-pen"></i> Edit Data Siswa</h2>
+            <form id="formEditSiswa" onsubmit="window.simpanEditSiswa(event)">
+                <input type="hidden" id="editSiswaDocId">
+                <div class="form-group">
+                    <label>NISN Siswa:</label>
+                    <input type="text" id="editNisnSiswa" required>
+                </div>
+                <div class="form-group">
+                    <label>Nama Siswa:</label>
+                    <input type="text" id="editNamaSiswa" required>
+                </div>
+                <div class="form-group">
+                    <label>Kelas:</label>
+                    <input type="text" id="editKelasSiswa" required>
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="text" id="editPassSiswa" required>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                    <button type="button" class="btn-danger" style="flex: 1; justify-content: center;" onclick="window.tutupEditSiswaModal()">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT PROFIL MANDIRI SISWA (FOTO, NAMA, PASSWORD) -->
+    <div id="editProfilSiswaModal" class="login-modal" style="display: none !important;">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-id-badge"></i> Edit Profil Saya</h2>
+            <form id="formEditProfilSiswa" onsubmit="window.simpanProfilSiswaMandiri(event)">
+                <div class="form-group" style="text-align: center;">
+                    <div class="profile-avatar-container" style="width: 90px; height: 90px;">
+                        <img id="previewFotoProfil" src="https://via.placeholder.com/150?text=Foto" alt="Foto Profil">
+                    </div>
+                    <label for="inputFotoProfil" style="cursor: pointer; color: #4318ff; font-size: 0.85rem;">
+                        <i class="fa-solid fa-camera"></i> Ubah Foto Profil
+                    </label>
+                    <input type="file" id="inputFotoProfil" accept="image/*" style="display: none;" onchange="window.previewFotoProfilSelected(event)">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Lengkap:</label>
+                    <input type="text" id="profilNamaSiswa" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password Baru (Kosongkan jika tidak diubah):</label>
+                    <input type="password" id="profilPassSiswa" placeholder="Masukkan password baru...">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                    <button type="button" class="btn-danger" style="flex: 1; justify-content: center;" onclick="window.tutupEditProfilSiswaModal()">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT PROFIL GURU (FOTO, NAMA, PASSWORD) -->
+    <div id="editProfilGuruModal" class="login-modal" style="display: none !important;">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-user-pen"></i> Edit Profil Guru</h2>
+            <form id="formEditProfilGuru" onsubmit="window.simpanProfilGuruMandiri(event)">
+                <div class="form-group" style="text-align: center;">
+                    <div class="profile-avatar-container" style="width: 90px; height: 90px;">
+                        <img id="previewFotoProfilGuru" src="https://via.placeholder.com/150?text=Guru" alt="Foto Profil Guru">
+                    </div>
+                    <label for="inputFotoProfilGuru" style="cursor: pointer; color: #4318ff; font-size: 0.85rem;">
+                        <i class="fa-solid fa-camera"></i> Unggah / Ubah Foto Profil
+                    </label>
+                    <input type="file" id="inputFotoProfilGuru" accept="image/*" style="display: none;" onchange="window.previewFotoProfilGuruSelected(event)">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Lengkap Guru:</label>
+                    <input type="text" id="profilNamaGuru" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password Baru (Kosongkan jika tidak diubah):</label>
+                    <input type="password" id="profilPassGuru" placeholder="Masukkan password baru...">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                    <button type="button" class="btn-danger" style="flex: 1; justify-content: center;" onclick="window.tutupEditProfilGuruModal()">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONTAINER UTAMA APP -->
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- OVERLAY SIDEBAR UNTUK HP -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-graduation-cap fa-xl"></i>
+                <h2>Anak Hebat</h2>
+            </div>
+            
+            <div class="user-profile-summary">
+                <div class="profile-avatar-container" id="sidebarAvatarContainer">
+                    <img id="userAvatarImg" src="https://via.placeholder.com/150?text=User" alt="Avatar">
+                </div>
+                <span id="userRoleBadge" class="badge">SISWA</span>
+                <h4 id="userNameDisplay" style="margin-top: 5px;">-</h4>
+                <small id="userSubDetail" style="color:#707ebe; display:block; margin-top:3px;"></small>
+                
+                <!-- Tombol Edit Profil Siswa di Sidebar -->
+                <button id="btnEditProfilSiswaSidebar" class="btn-info" style="margin-top: 8px; width: 100%; display: none;" onclick="window.bukaEditProfilSiswaModal()">
+                    <i class="fa-solid fa-user-pen"></i> Edit Profil
+                </button>
+                <!-- Tombol Edit Profil Guru di Sidebar -->
+                <button id="btnEditProfilGuruSidebar" class="btn-info" style="margin-top: 8px; width: 100%; display: none;" onclick="window.bukaEditProfilGuruModal()">
+                    <i class="fa-solid fa-user-pen"></i> Edit Profil
+                </button>
+            </div>
+
+            <nav class="nav-menu" id="navMenu">
+                <!-- Navigasi Dinamis via JS -->
+            </nav>
+
+            <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="toggle-btn" id="btnToggle"><i class="fa-solid fa-bars"></i></button>
+                <h1 id="pageTitle">Dashboard</h1>
+            </header>
+
+            <section class="content-body" id="contentBody">
+                <!-- Halaman dimuat di sini -->
+            </section>
+        </main>
+    </div>
+
+    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, where, getDoc, setDoc 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { 
+            getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updatePassword, sendPasswordResetEmail, signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Konfigurasi Firebase Proyek
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvopp_GRWvaCH05Ol9XSaly98aRAcFAHA",
+            authDomain: "sdn-129.firebaseapp.com",
+            projectId: "sdn-129",
+            storageBucket: "sdn-129.firebasestorage.app",
+            messagingSenderId: "894009105564",
+            appId: "1:894009105564:web:d7a9e131a2c0d767aee159",
+            measurementId: "G-YKZ7RTM3BP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let allSiswaCache = []; // Cache lokal data siswa untuk fitur pencarian
+        let currentPageName = 'dashboard';
+
+        // Helper Konversi ID Ke Email Firebase Auth Internal
+        function getFirebaseEmail(role, username) {
+            const cleanUser = username.trim().toLowerCase().replace(/\s+/g, '');
+            return `${role}_${cleanUser}@app.com`;
+        }
+
+        // Label Switcher pada Login
+        document.getElementById('roleSelect').addEventListener('change', (e) => {
+            const label = document.getElementById('labelUsername');
+            const inputUser = document.getElementById('usernameInput');
+            const forgotBtn = document.getElementById('forgotPasswordContainer');
+
+            if (e.target.value === 'admin') {
+                label.innerText = "Email Admin:";
+                inputUser.placeholder = "Masukkan Email Admin...";
+                forgotBtn.style.display = "block";
+            } else if (e.target.value === 'guru') {
+                label.innerText = "NIP Guru:";
+                inputUser.placeholder = "Masukkan NIP / ID...";
+                forgotBtn.style.display = "none";
+            } else {
+                label.innerText = "NISN Siswa:";
+                inputUser.placeholder = "Masukkan NISN / ID...";
+                forgotBtn.style.display = "none";
+            }
+        });
+
+        // Fitur Lupa Password Admin via Firebase Reset Email
+        window.modalLupaPasswordAdmin = async function() {
+            const emailAdmin = prompt("Masukkan Email Admin untuk mengirimkan link reset password:");
+            if (!emailAdmin) return;
+            try {
+                await sendPasswordResetEmail(auth, emailAdmin.trim());
+                alert(`Link tautan reset password telah dikirimkan ke email: ${emailAdmin}\nSilakan periksa kotak masuk atau folder spam email Anda.`);
+            } catch (err) {
+                alert("Gagal mengirimkan email reset password: " + err.message);
+            }
+        };
+
+        // Helper Tanggal & Hari
+        function getHariIndo(dateStr) {
+            if (!dateStr) return '-';
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const d = new Date(dateStr);
+            return isNaN(d.getDay()) ? dateStr : days[d.getDay()];
+        }
+
+        // Helper Format Tanggal Lengkap (Hari, Tanggal Bulan Tahun)
+        function formatTanggalLengkap(dateStr) {
+            if (!dateStr) return '-';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1;
+            const day = parseInt(parts[2]);
+            
+            const d = new Date(year, month, day);
+            if (isNaN(d.getTime())) return dateStr;
+
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+            const namaHari = days[d.getDay()];
+            const tgl = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+            const namaBulan = monthNames[d.getMonth()];
+
+            return `${namaHari}, ${tgl} ${namaBulan} ${d.getFullYear()}`;
+        }
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const currentMonthStr = todayStr.substring(0, 7); // YYYY-MM
+
+        // Helper Konversi File Gambar ke Base64
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Helper untuk Menutup Sidebar Mobile
+        function closeSidebarMobile() {
+            document.getElementById('sidebar')?.classList.remove('show');
+            document.getElementById('sidebarOverlay')?.classList.remove('show');
+        }
+
+        // PENANGANAN TOMBOL KEMBALI HP (HISTORY MANAGEMENT)
+        window.addEventListener('popstate', (e) => {
+            if (!currentUser) return;
+            if (e.state && e.state.page) {
+                window.loadPage(e.state.page, null, false);
+            } else {
+                if (currentPageName !== 'dashboard') {
+                    window.loadPage('dashboard', null, false);
+                } else {
+                    if (confirm("Apakah Anda yakin ingin keluar dari aplikasi?")) {
+                        window.history.back();
+                    } else {
+                        window.history.pushState({ page: 'dashboard' }, '');
+                    }
+                }
+            }
+        });
+
+        // -------------------------------------------------------------
+        // NAVIGASI HALAMAN (LOAD PAGE)
+        // -------------------------------------------------------------
+        window.loadPage = async function(pageName, param = null, pushState = true) {
+            const contentBody = document.getElementById('contentBody');
+            const pageTitle = document.getElementById('pageTitle');
+            if (!contentBody || !currentUser) return;
+
+            currentPageName = pageName;
+            if (pushState) {
+                window.history.pushState({ page: pageName }, '');
+            }
+
+            // Tutup sidebar otomatis setelah menu diklik di HP
+            closeSidebarMobile();
+
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const activeMenu = document.getElementById(`menu-${pageName}`);
+            if (activeMenu) activeMenu.classList.add('active');
+
+            const formattedTitle = pageName.replace('-', ' ').toUpperCase();
+            if (pageTitle) pageTitle.innerText = formattedTitle;
+
+            contentBody.innerHTML = `<div class="card" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><p style="margin-top:10px;">Memuat data...</p></div>`;
+
+            // 1. DASHBOARD
+            if (pageName === 'dashboard') {
+                try {
+                    const schoolDoc = await getDoc(doc(db, "pengaturan", "sekolah"));
+                    const school = schoolDoc.exists() ? schoolDoc.data() : { namaSekolah: "SD N-1 Hebat" };
+
+                    // JIKA SISWA
+                    if (currentUser.role === 'siswa') {
+                        const categories = ['bangun-pagi', 'berolahraga', 'beribadah', 'makan-sehat', 'gemar-belajar', 'bermasyarakat', 'tidur-cepat'];
+                        const counts = {};
+                        
+                        for (const cat of categories) {
+                            const q = query(collection(db, `kategori_${cat}`), where("siswaId", "==", currentUser.id));
+                            const snap = await getDocs(q);
+                            counts[cat] = snap.size;
+                        }
+
+                        contentBody.innerHTML = `
+                            <div class="card" style="background: linear-gradient(135deg, #4318ff, #707ebe); color:white;">
+                                <h2>Selamat Datang, ${currentUser.name}!</h2>
+                                <p style="margin-top:5px; opacity:0.9;">
+                                    Berikut adalah ringkasan seluruh data 7 Kebiasaan yang telah kamu catat di ${school.namaSekolah || 'Aplikasi 7 Kebiasaan'}.
+                                </p>
+                            </div>
+
+                            <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-chart-pie"></i> Ringkasan Pengisian 7 Kebiasaan</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-sun"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['bangun-pagi']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">1. Bangun Pagi</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-person-running"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['berolahraga']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">2. Berolahraga</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-hands-praying"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['beribadah']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">3. Beribadah</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-utensils"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['makan-sehat']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">4. Makan Sehat</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['gemar-belajar']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">5. Gemar Belajar</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-people-hold"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['bermasyarakat']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">6. Bermasyarakat</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-bed"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${counts['tidur-cepat']}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">7. Tidur Cepat</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // DASHBOARD UNTUK GURU & ADMIN
+                        const guruSnap = await getDocs(collection(db, "data_guru"));
+                        const siswaSnap = await getDocs(collection(db, "data_siswa"));
+
+                        contentBody.innerHTML = `
+                            <div class="card" style="background: linear-gradient(135deg, #4318ff, #707ebe); color:white;">
+                                <h2>Selamat Datang di ${school.namaSekolah || 'Aplikasi 7 Kebiasaan'}!</h2>
+                                <p style="margin-top:5px; opacity:0.9;">
+                                    Halo <strong>${currentUser.name}</strong> (${currentUser.role.toUpperCase()}${currentUser.waliKelas ? ' - Wali Kelas ' + currentUser.waliKelas : ''}). Mari wujudkan generasi anak Indonesia hebat dan berkarakter.
+                                </p>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${guruSnap.size}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">Total Guru</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                                    <div>
+                                        <h2 style="font-size:1.6rem;">${siswaSnap.size}</h2>
+                                        <p style="color:#707ebe; font-size:0.85rem;">Total Siswa Terdaftar</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    contentBody.innerHTML = `<div class="card"><p style="color:red;">Error: ${e.message}</p></div>`;
+                }
+            }
+
+            // 2. KELOLA GURU (ADMIN ONLY)
+            else if (pageName === 'kelola-guru') {
+                const snap = await getDocs(collection(db, "data_guru"));
+                let rows = "";
+                snap.forEach(docSnap => {
+                    const d = docSnap.data();
+                    rows += `
+                        <tr>
+                            <td><strong>${d.nip}</strong></td>
+                            <td>${d.nama}</td>
+                            <td><span class="badge" style="background:#01b574;">${d.waliKelas || '-'}</span></td>
+                            <td>${d.password}</td>
+                            <td>
+                                <button class="btn-danger" onclick="window.hapusData('data_guru', '${docSnap.id}', 'kelola-guru')">
+                                    <i class="fa-solid fa-trash"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                contentBody.innerHTML = `
+                    <div class="card">
+                        <h3>Tambah Guru Baru</h3>
+                        <form onsubmit="window.tambahGuru(event)" style="margin-top:15px;">
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                                <div class="form-group">
+                                    <label>NIP / Username Guru:</label>
+                                    <input type="text" id="addNipGuru" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Lengkap Guru:</label>
+                                    <input type="text" id="addNamaGuru" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Wali Kelas (Contoh: Kelas 5A):</label>
+                                    <input type="text" id="addWaliKelasGuru" placeholder="Isi kelas jika Wali Kelas" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password Akun:</label>
+                                    <input type="text" id="addPassGuru" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Simpan Guru</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3>Daftar Guru Terdaftar</h3>
+                        <table class="custom-table">
+                            <thead><tr><th>NIP / Username</th><th>Nama Lengkap</th><th>Wali Kelas</th><th>Password</th><th>Aksi</th></tr></thead>
+                            <tbody>${rows || '<tr><td colspan="5" style="text-align:center;">Belum ada data.</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // 3. KELOLA SISWA (ADMIN & GURU)
+            else if (pageName === 'kelola-siswa') {
+                let snap;
+                if (currentUser.role === 'guru') {
+                    const q = query(collection(db, "data_siswa"), where("kelas", "==", currentUser.waliKelas || ""));
+                    snap = await getDocs(q);
+                } else {
+                    snap = await getDocs(collection(db, "data_siswa"));
+                }
+
+                let classOptionsHTML = `<option value="">-- Pilih Kelas --</option>`;
+                let filterClassOptionsHTML = `<option value="semua">-- Semua Kelas --</option>`;
+                
+                const guruSnap = await getDocs(collection(db, "data_guru"));
+                const kelasSet = new Set();
+                guruSnap.forEach(g => {
+                    const w = g.data().waliKelas;
+                    if (w) kelasSet.add(w.trim());
+                });
+                
+                snap.forEach(docSnap => {
+                    const k = docSnap.data().kelas;
+                    if (k) kelasSet.add(k.trim());
+                });
+
+                kelasSet.forEach(k => {
+                    classOptionsHTML += `<option value="${k}">${k}</option>`;
+                    filterClassOptionsHTML += `<option value="${k}">${k}</option>`;
+                });
+
+                allSiswaCache = [];
+                snap.forEach(docSnap => {
+                    allSiswaCache.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                contentBody.innerHTML = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-file-excel"></i> Import Data Siswa via Excel</h3>
+                            <div>
+                                <button class="btn-success" onclick="window.downloadTemplateExcel()">
+                                    <i class="fa-solid fa-download"></i> Download Format Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Pilih File Excel (.xlsx / .xls):</label>
+                            <input type="file" id="excelFileInput" accept=".xlsx, .xls">
+                        </div>
+                        <button class="btn-primary" onclick="window.importExcelSiswa()">
+                            <i class="fa-solid fa-file-import"></i> Proses Import Excel
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tambah Siswa Manual</h3>
+                        <form onsubmit="window.tambahSiswa(event)" style="margin-top:15px;">
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:15px;">
+                                <div class="form-group"><label>NISN Siswa:</label><input type="text" id="addNisnSiswa" required></div>
+                                <div class="form-group"><label>Nama Siswa:</label><input type="text" id="addNamaSiswa" required></div>
+                                <div class="form-group">
+                                    <label>Kelas:</label>
+                                    ${currentUser.role === 'admin' ? 
+                                        `<select id="addKelasSiswa" required>${classOptionsHTML}</select>` : 
+                                        `<input type="text" id="addKelasSiswa" value="${currentUser.waliKelas || ''}" required>`
+                                    }
+                                </div>
+                                <div class="form-group"><label>Password:</label><input type="text" id="addPassSiswa" required></div>
+                            </div>
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Simpan Siswa</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Daftar Siswa ${currentUser.role === 'guru' ? ('Wali ' + currentUser.waliKelas) : 'Seluruhnya'}</h3>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; max-width: 600px; justify-content: flex-end;">
+                                ${currentUser.role === 'admin' ? `
+                                <div style="min-width: 150px;">
+                                    <select id="filterKelasSiswaAdmin" onchange="window.renderTabelSiswaFiltered()" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e5f2; border-radius: 8px;">
+                                        ${filterClassOptionsHTML}
+                                    </select>
+                                </div>
+                                ` : ''}
+                                <div style="min-width: 200px; flex-grow: 1;">
+                                    <input type="text" id="searchSiswaInput" placeholder="Cari NISN / Nama Siswa..." oninput="window.renderTabelSiswaFiltered()" style="width: 100%; padding: 8px 12px; border: 1px solid #e0e5f2; border-radius: 8px;">
+                                </div>
+                                <button class="btn-danger" onclick="window.hapusBanyakSiswa()" style="padding: 8px 14px;">
+                                    <i class="fa-solid fa-trash-can"></i> Hapus Terpilih
+                                </button>
+                            </div>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;"><input type="checkbox" id="selectAllSiswa" onchange="window.toggleSelectAllSiswa(this)"></th>
+                                        <th>NISN</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Kelas</th>
+                                        <th>Password</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodySiswaList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                window.renderTabelSiswaFiltered();
+            }
+
+            // 4. PROFIL ADMIN (DENGAN EDIT FOTO PROFIL, NAMA & PASSWORD)
+            else if (pageName === 'profil-admin') {
+                const userAuth = auth.currentUser;
+                contentBody.innerHTML = `
+                    <div class="card" style="max-width:500px;">
+                        <h3><i class="fa-solid fa-user-gear"></i> Edit Profil Admin</h3>
+                        <p style="color:#707ebe; font-size:0.85rem; margin-top:5px;">Perbarui data profil, foto, dan kata sandi akun Admin Anda.</p>
+                        
+                        <form onsubmit="window.updateProfilAdmin(event)" style="margin-top:15px;">
+                            <div class="form-group" style="text-align: center;">
+                                <div class="profile-avatar-container" style="width: 90px; height: 90px;">
+                                    <img id="previewFotoAdmin" src="${currentUser.fotoProfil || 'https://via.placeholder.com/150?text=Admin'}" alt="Foto Admin">
+                                </div>
+                                <label for="inputFotoAdmin" style="cursor: pointer; color: #4318ff; font-size: 0.85rem;">
+                                    <i class="fa-solid fa-camera"></i> Unggah Foto Profil
+                                </label>
+                                <input type="file" id="inputFotoAdmin" accept="image/*" style="display: none;" onchange="window.previewFotoAdminSelected(event)">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nama Lengkap Admin:</label>
+                                <input type="text" id="editAdminNama" value="${currentUser.name || ''}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email / Username Admin:</label>
+                                <input type="text" value="${userAuth ? userAuth.email : 'admin@app.com'}" disabled style="background:#f4f7fe; cursor:not-allowed;">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Password Baru (Kosongkan jika tidak diubah):</label>
+                                <input type="password" id="editAdminPassBaru" placeholder="Masukkan password baru..." minlength="6">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Konfirmasi Password Baru:</label>
+                                <input type="password" id="editAdminPassKonfirm" placeholder="Ulangi password baru..." minlength="6">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Admin</button>
+                        </form>
+                    </div>
+                `;
+            }
+
+            // 5. CETAK KARTU LOGIN SISWA
+            else if (pageName === 'cetak-kartu') {
+                let siswaSnap;
+                if (currentUser.role === 'guru') {
+                    const q = query(collection(db, "data_siswa"), where("kelas", "==", currentUser.waliKelas || ""));
+                    siswaSnap = await getDocs(q);
+                } else {
+                    siswaSnap = await getDocs(collection(db, "data_siswa"));
+                }
+
+                const kelasSet = new Set();
+                siswaSnap.forEach(docSnap => {
+                    const k = docSnap.data().kelas;
+                    if (k) kelasSet.add(k);
+                });
+
+                let kelasOptions = `<option value="semua">-- Semua Kelas --</option>`;
+                kelasSet.forEach(k => {
+                    kelasOptions += `<option value="${k}">${k}</option>`;
+                });
+
+                contentBody.innerHTML = `
+                    <div class="card no-print">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-address-card"></i> Cetak Kartu Login Siswa</h3>
+                            <button class="btn-success" onclick="window.print()">
+                                <i class="fa-solid fa-print"></i> Cetak Kartu
+                            </button>
+                        </div>
+                        <div class="form-group" style="max-width:300px;">
+                            <label>Filter Kelas Siswa:</label>
+                            <select id="filterKelasKartu" onchange="window.renderKartuSiswaPrint()">${kelasOptions}</select>
+                        </div>
+                    </div>
+
+                    <div id="printAreaKartu" class="card">
+                        <div class="print-header" id="kopHeaderKartu">
+                            <div class="header-text" style="width:100%; text-align:center;">
+                                <h2>KARTU AKUN LOGIN SISWA</h2>
+                                <p>Aplikasi Jurnal 7 Kebiasaan Anak Indonesia Hebat</p>
+                            </div>
+                        </div>
+
+                        <div id="cardsPrintContainer" class="cards-grid-print">
+                        </div>
+                    </div>
+                `;
+
+                window.renderKartuSiswaPrint();
+            }
+
+            // 6. DATA SEKOLAH & LOGO KOP
+            else if (pageName === 'data-sekolah') {
+                const schoolDoc = await getDoc(doc(db, "pengaturan", "sekolah"));
+                const data = schoolDoc.exists() ? schoolDoc.data() : { namaSekolah: '', npsn: '', alamat: '', kepalaSekolah: '', logoDaerah: '', logoSekolah: '' };
+
+                contentBody.innerHTML = `
+                    <div class="card" style="max-width:650px;">
+                        <h3><i class="fa-solid fa-school"></i> Edit Data Sekolah & Kop Surat</h3>
+                        <form onsubmit="window.simpanDataSekolah(event)" style="margin-top:15px;">
+                            <div class="form-group">
+                                <label>Nama Sekolah:</label>
+                                <input type="text" id="schNama" value="${data.namaSekolah || ''}" placeholder="Contoh: SD Negeri 1 Indonesia" required>
+                            </div>
+                            <div class="form-group">
+                                <label>NPSN:</label>
+                                <input type="text" id="schNpsn" value="${data.npsn || ''}" placeholder="12345678">
+                            </div>
+                            <div class="form-group">
+                                <label>Alamat Sekolah:</label>
+                                <textarea id="schAlamat" rows="2">${data.alamat || ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Kepala Sekolah:</label>
+                                <input type="text" id="schKepsek" value="${data.kepalaSekolah || ''}" placeholder="Nama & Gelar Kepsek">
+                            </div>
+
+                            <hr style="margin:20px 0; border:0; border-top:1px solid #e0e5f2;">
+                            <h4><i class="fa-solid fa-image"></i> Pengaturan Logo Kop Surat</h4>
+                            <br>
+
+                            <div class="form-group">
+                                <label>Unggah Logo Daerah (Sebelah Kiri Kop):</label>
+                                <input type="file" id="schLogoDaerahFile" accept="image/*">
+                                ${data.logoDaerah ? `<div style="margin-top:5px;"><img src="${data.logoDaerah}" style="height:50px;"> <small style="color:green;">Logo daerah tersimpan</small></div>` : ''}
+                            </div>
+
+                            <div class="form-group">
+                                <label>Unggah Logo Sekolah (Sebelah Kanan Kop):</label>
+                                <input type="file" id="schLogoSekolahFile" accept="image/*">
+                                ${data.logoSekolah ? `<div style="margin-top:5px;"><img src="${data.logoSekolah}" style="height:50px;"> <small style="color:green;">Logo sekolah tersimpan</small></div>` : ''}
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="margin-top:10px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Data Sekolah & Logo</button>
+                        </form>
+                    </div>
+                `;
+            }
+
+            // 7. CETAK JURNAL SISWA
+            else if (pageName === 'cetak-jurnal') {
+                let siswaSnap;
+                if (currentUser.role === 'guru') {
+                    const q = query(collection(db, "data_siswa"), where("kelas", "==", currentUser.waliKelas || ""));
+                    siswaSnap = await getDocs(q);
+                } else {
+                    siswaSnap = await getDocs(collection(db, "data_siswa"));
+                }
+
+                let siswaOptions = `<option value="">-- Pilih Siswa --</option>`;
+                siswaSnap.forEach(docSnap => {
+                    const s = docSnap.data();
+                    siswaOptions += `<option value="${s.nisn}">${s.nama} (${s.kelas || '-'})</option>`;
+                });
+
+                contentBody.innerHTML = `
+                    <div class="card no-print">
+                        <h3><i class="fa-solid fa-print"></i> Cetak Laporan Jurnal Siswa</h3>
+                        <div style="display:flex; gap:15px; margin-top:15px; flex-wrap:wrap;">
+                            <div class="form-group" style="flex:1; min-width:200px;">
+                                <label>Pilih Siswa:</label>
+                                <select id="filterCetakSiswa">${siswaOptions}</select>
+                            </div>
+                            <div class="form-group" style="flex:1; min-width:180px;">
+                                <label>Pilih Bulan Laporan:</label>
+                                <input type="month" id="filterCetakBulan" value="${currentMonthStr}">
+                            </div>
+                            <button class="btn-primary" onclick="window.tampilkanLaporanJurnal()" style="align-self:flex-end; margin-bottom:15px;">
+                                <i class="fa-solid fa-filter"></i> Tampilkan Jurnal
+                            </button>
+                            <button class="btn-success" onclick="window.print()" style="align-self:flex-end; margin-bottom:15px;">
+                                <i class="fa-solid fa-print"></i> Cetak Halaman
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="printArea" class="card">
+                        <!-- Kop Cetak -->
+                        <div class="print-header" id="kopHeaderCetak">
+                            <img id="imgLogoDaerah" src="" alt="Logo Daerah" style="display:none;">
+                            <div class="header-text">
+                                <h2 id="printNamaSekolah">JURNAL 7 KEBIASAAN SISWA</h2>
+                                <p id="printAlamatSekolah">Laporan Catatan Kebiasaan Harian Anak Indonesia Hebat</p>
+                            </div>
+                            <img id="imgLogoSekolah" src="" alt="Logo Sekolah" style="display:none;">
+                        </div>
+
+                        <div id="previewHasilJurnal">
+                            <p style="text-align:center; color:#707ebe;">Silakan pilih siswa dan bulan di atas untuk menampilkan jurnal kebiasaan.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 8. SISWA: 7 KEBIASAAN TERPISAH
+            else if (pageName.startsWith('kebiasaan-')) {
+                const type = pageName.replace('kebiasaan-', '');
+                await renderHalamanKebiasaanDinamis(type);
+            }
+        };
+
+        // Render Kartu Login Siswa
+        window.renderKartuSiswaPrint = async function() {
+            const container = document.getElementById('cardsPrintContainer');
+            if (!container) return;
+
+            const selectedKelas = document.getElementById('filterKelasKartu')?.value || 'semua';
+
+            let snap;
+            if (currentUser.role === 'guru') {
+                const q = query(collection(db, "data_siswa"), where("kelas", "==", currentUser.waliKelas || ""));
+                snap = await getDocs(q);
+            } else {
+                snap = await getDocs(collection(db, "data_siswa"));
+            }
+
+            let htmlCards = "";
+            snap.forEach(docSnap => {
+                const s = docSnap.data();
+                if (selectedKelas === 'semua' || s.kelas === selectedKelas) {
+                    htmlCards += `
+                        <div class="siswa-card-box">
+                            <h4><i class="fa-solid fa-id-card"></i> KARTU AKUN SISWA</h4>
+                            <table>
+                                <tr><td style="width:80px; font-weight:bold;">Nama</td><td>: ${s.nama}</td></tr>
+                                <tr><td style="font-weight:bold;">Kelas</td><td>: ${s.kelas || '-'}</td></tr>
+                                <tr><td style="font-weight:bold;">NISN / User</td><td>: <strong>${s.nisn}</strong></td></tr>
+                                <tr><td style="font-weight:bold;">Password</td><td>: <strong>${s.password}</strong></td></tr>
+                            </table>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = htmlCards || '<p style="text-align:center; width:100%;">Tidak ada data siswa untuk dicetak.</p>';
+        };
+
+        // -------------------------------------------------------------
+        // RENDER TABEL & PENCARIAN SISWA + FITUR KELOMPOKKAN KELAS + CEKLIS HAPUS BANYAK
+        // -------------------------------------------------------------
+        window.renderTabelSiswaFiltered = function() {
+            const tbody = document.getElementById('tbodySiswaList');
+            if (!tbody) return;
+
+            const searchVal = (document.getElementById('searchSiswaInput')?.value || '').toLowerCase();
+            const filterKelas = (document.getElementById('filterKelasSiswaAdmin')?.value || 'semua');
+
+            const filtered = allSiswaCache.filter(s => {
+                const matchSearch = (s.nisn && s.nisn.toLowerCase().includes(searchVal)) || 
+                                    (s.nama && s.nama.toLowerCase().includes(searchVal));
+                const matchKelas = (filterKelas === 'semua' || s.kelas === filterKelas);
+                return matchSearch && matchKelas;
+            });
+
+            let rows = "";
+            filtered.forEach(d => {
+                rows += `
+                    <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="check-siswa-item" value="${d.id}">
+                        </td>
+                        <td><strong>${d.nisn}</strong></td>
+                        <td>${d.nama}</td>
+                        <td>${d.kelas || '-'}</td>
+                        <td>${d.password}</td>
+                        <td>
+                            <button class="btn-warning" onclick="window.bukaEditSiswaModal('${d.id}')">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                            <button class="btn-info" onclick="window.resetPasswordSiswaByAdmin('${d.id}', '${d.nisn}')">
+                                <i class="fa-solid fa-key"></i> Reset Password
+                            </button>
+                            <button class="btn-danger" onclick="window.hapusData('data_siswa', '${d.id}', 'kelola-siswa')">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = rows || '<tr><td colspan="6" style="text-align:center;">Data siswa tidak ditemukan.</td></tr>';
+            
+            const selectAllCb = document.getElementById('selectAllSiswa');
+            if (selectAllCb) selectAllCb.checked = false;
+        };
+
+        // Select All Checkbox
+        window.toggleSelectAllSiswa = function(masterCb) {
+            const checkboxes = document.querySelectorAll('.check-siswa-item');
+            checkboxes.forEach(cb => cb.checked = masterCb.checked);
+        };
+
+        // Hapus Banyak Siswa Sekaligus
+        window.hapusBanyakSiswa = async function() {
+            const selectedBoxes = document.querySelectorAll('.check-siswa-item:checked');
+            if (selectedBoxes.length === 0) {
+                alert("Pilih setidaknya satu siswa yang ingin dihapus!");
+                return;
+            }
+
+            if (confirm(`Apakah Anda yakin ingin menghapus ${selectedBoxes.length} data siswa terpilih?`)) {
+                try {
+                    for (const cb of selectedBoxes) {
+                        await deleteDoc(doc(db, "data_siswa", cb.value));
+                    }
+                    alert("Data siswa terpilih berhasil dihapus!");
+                    window.loadPage('kelola-siswa', null, false);
+                } catch (err) {
+                    alert("Gagal menghapus beberapa data siswa: " + err.message);
+                }
+            }
+        };
+
+        // RESET PASSWORD SISWA OLEH ADMIN / GURU
+        window.resetPasswordSiswaByAdmin = async function(id, nisn) {
+            const passBaru = prompt(`Masukkan password baru untuk siswa dengan NISN ${nisn}:`, "123456");
+            if (!passBaru) return;
+
+            try {
+                await updateDoc(doc(db, "data_siswa", id), { password: passBaru.trim() });
+                alert(`Password untuk siswa NISN ${nisn} berhasil direset menjadi: ${passBaru}`);
+                window.loadPage('kelola-siswa', null, false);
+            } catch (err) {
+                alert("Gagal mereset password siswa: " + err.message);
+            }
+        };
+
+        // Modal Edit Siswa Handlers
+        window.bukaEditSiswaModal = function(id) {
+            const item = allSiswaCache.find(s => s.id === id);
+            if (!item) return;
+
+            document.getElementById('editSiswaDocId').value = item.id;
+            document.getElementById('editNisnSiswa').value = item.nisn || '';
+            document.getElementById('editNamaSiswa').value = item.nama || '';
+            document.getElementById('editKelasSiswa').value = item.kelas || '';
+            document.getElementById('editPassSiswa').value = item.password || '';
+
+            const modal = document.getElementById('editSiswaModal');
+            modal.style.setProperty('display', 'flex', 'important');
+        };
+
+        window.tutupEditSiswaModal = function() {
+            const modal = document.getElementById('editSiswaModal');
+            modal.style.setProperty('display', 'none', 'important');
+        };
+
+        window.simpanEditSiswa = async function(e) {
+            e.preventDefault();
+            const docId = document.getElementById('editSiswaDocId').value;
+            const nisn = document.getElementById('editNisnSiswa').value.trim();
+            const nama = document.getElementById('editNamaSiswa').value.trim();
+            const kelas = document.getElementById('editKelasSiswa').value.trim();
+            const password = document.getElementById('editPassSiswa').value.trim();
+
+            try {
+                await updateDoc(doc(db, "data_siswa", docId), { nisn, nama, kelas, password });
+                alert("Data siswa berhasil diperbarui!");
+                window.tutupEditSiswaModal();
+                window.loadPage('kelola-siswa', null, false);
+            } catch (err) {
+                alert("Gagal memperbarui data siswa: " + err.message);
+            }
+        };
+
+        // -------------------------------------------------------------
+        // EDIT PROFIL, FOTO PROFIL, DAN UBAH PASSWORD OLEH SISWA
+        // -------------------------------------------------------------
+        window.bukaEditProfilSiswaModal = function() {
+            if (!currentUser || currentUser.role !== 'siswa') return;
+            document.getElementById('profilNamaSiswa').value = currentUser.name || '';
+            document.getElementById('profilPassSiswa').value = '';
+            
+            const prevImg = document.getElementById('previewFotoProfil');
+            if (currentUser.fotoProfil) {
+                prevImg.src = currentUser.fotoProfil;
+            } else {
+                prevImg.src = 'https://via.placeholder.com/150?text=Foto';
+            }
+
+            const modal = document.getElementById('editProfilSiswaModal');
+            modal.style.setProperty('display', 'flex', 'important');
+        };
+
+        window.tutupEditProfilSiswaModal = function() {
+            const modal = document.getElementById('editProfilSiswaModal');
+            modal.style.setProperty('display', 'none', 'important');
+        };
+
+        window.previewFotoProfilSelected = async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const base64 = await convertFileToBase64(file);
+                document.getElementById('previewFotoProfil').src = base64;
+            }
+        };
+
+        window.simpanProfilSiswaMandiri = async function(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'siswa') return;
+
+            const namaBaru = document.getElementById('profilNamaSiswa').value.trim();
+            const passBaru = document.getElementById('profilPassSiswa').value.trim();
+            const fileFoto = document.getElementById('inputFotoProfil').files[0];
+
+            let updatePayload = { nama: namaBaru };
+
+            if (fileFoto) {
+                const base64Foto = await convertFileToBase64(fileFoto);
+                updatePayload.fotoProfil = base64Foto;
+                currentUser.fotoProfil = base64Foto;
+            }
+
+            if (passBaru !== "") {
+                updatePayload.password = passBaru;
+                currentUser.password = passBaru;
+            }
+
+            try {
+                if (passBaru !== "" && auth.currentUser) {
+                    await updatePassword(auth.currentUser, passBaru);
+                }
+                
+                await updateDoc(doc(db, "data_siswa", currentUser.id), updatePayload);
+                currentUser.name = namaBaru;
+
+                // Perbarui Tampilan Sidebar
+                document.getElementById('userNameDisplay').innerText = namaBaru;
+                if (currentUser.fotoProfil) {
+                    document.getElementById('userAvatarImg').src = currentUser.fotoProfil;
+                }
+
+                alert("Profil berhasil diperbarui!");
+                window.tutupEditProfilSiswaModal();
+                window.loadPage('dashboard', null, false);
+            } catch (err) {
+                if (err.code === 'auth/requires-recent-login') {
+                    alert("Demi keamanan, silakan keluar dan masuk kembali sebelum memperbarui password.");
+                } else {
+                    alert("Gagal mengupdate profil: " + err.message);
+                }
+            }
+        };
+
+        // -------------------------------------------------------------
+        // EDIT PROFIL, FOTO PROFIL, DAN UBAH PASSWORD OLEH GURU
+        // -------------------------------------------------------------
+        window.bukaEditProfilGuruModal = function() {
+            if (!currentUser || currentUser.role !== 'guru') return;
+            document.getElementById('profilNamaGuru').value = currentUser.name || '';
+            document.getElementById('profilPassGuru').value = '';
+            
+            const prevImg = document.getElementById('previewFotoProfilGuru');
+            if (currentUser.fotoProfil) {
+                prevImg.src = currentUser.fotoProfil;
+            } else {
+                prevImg.src = 'https://via.placeholder.com/150?text=Guru';
+            }
+
+            const modal = document.getElementById('editProfilGuruModal');
+            modal.style.setProperty('display', 'flex', 'important');
+        };
+
+        window.tutupEditProfilGuruModal = function() {
+            const modal = document.getElementById('editProfilGuruModal');
+            modal.style.setProperty('display', 'none', 'important');
+        };
+
+        window.previewFotoProfilGuruSelected = async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const base64 = await convertFileToBase64(file);
+                document.getElementById('previewFotoProfilGuru').src = base64;
+            }
+        };
+
+        window.simpanProfilGuruMandiri = async function(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'guru') return;
+
+            const namaBaru = document.getElementById('profilNamaGuru').value.trim();
+            const passBaru = document.getElementById('profilPassGuru').value.trim();
+            const fileFoto = document.getElementById('inputFotoProfilGuru').files[0];
+
+            let updatePayload = { nama: namaBaru };
+
+            if (fileFoto) {
+                const base64Foto = await convertFileToBase64(fileFoto);
+                updatePayload.fotoProfil = base64Foto;
+                currentUser.fotoProfil = base64Foto;
+            }
+
+            if (passBaru !== "") {
+                updatePayload.password = passBaru;
+                currentUser.password = passBaru;
+            }
+
+            try {
+                if (passBaru !== "" && auth.currentUser) {
+                    await updatePassword(auth.currentUser, passBaru);
+                }
+                
+                await updateDoc(doc(db, "data_guru", currentUser.id), updatePayload);
+                currentUser.name = namaBaru;
+
+                // Perbarui Tampilan Sidebar
+                document.getElementById('userNameDisplay').innerText = namaBaru;
+                if (currentUser.fotoProfil) {
+                    document.getElementById('userAvatarImg').src = currentUser.fotoProfil;
+                }
+
+                alert("Profil Guru berhasil diperbarui!");
+                window.tutupEditProfilGuruModal();
+                window.loadPage('dashboard', null, false);
+            } catch (err) {
+                if (err.code === 'auth/requires-recent-login') {
+                    alert("Demi keamanan, silakan keluar dan masuk kembali sebelum memperbarui password.");
+                } else {
+                    alert("Gagal mengupdate profil guru: " + err.message);
+                }
+            }
+        };
+
+        // -------------------------------------------------------------
+        // PREVIEW FOTO PROFIL ADMIN
+        // -------------------------------------------------------------
+        window.previewFotoAdminSelected = async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const base64 = await convertFileToBase64(file);
+                const prev = document.getElementById('previewFotoAdmin');
+                if (prev) prev.src = base64;
+            }
+        };
+
+        // -------------------------------------------------------------
+        // RENDER HALAMAN KEBIASAAN UNTUK SISWA
+        // -------------------------------------------------------------
+        async function renderHalamanKebiasaanDinamis(type) {
+            const contentBody = document.getElementById('contentBody');
+            
+            const q = query(
+                collection(db, `kategori_${type}`), 
+                where("siswaId", "==", currentUser.id)
+            );
+            const snap = await getDocs(q);
+
+            let formFields = '';
+            let tableHeaders = '';
+            let tableRowFunc = null;
+
+            if (type === 'bangun-pagi') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jam Bangun Pagi:</label><input type="time" id="kJam" required></div>
+                `;
+                tableHeaders = `<th>Tanggal</th><th>Jam Bangun</th>`;
+                tableRowFunc = (d) => `<td>${d.tanggal}</td><td>${d.jam} WITA/WIB</td>`;
+            } 
+            else if (type === 'berolahraga') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jenis Olahraga:</label><input type="text" id="kJenis" placeholder="Contoh: Lari, Senam, Sepeda" required></div>
+                    <div class="form-group"><label>Durasi Olahraga:</label><input type="text" id="kDurasi" placeholder="Contoh: 30 Menit" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Keterangan tambahan (opsional)"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Jenis Olahraga</th><th>Durasi</th><th>Ket</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${d.jenis}</td><td>${d.durasi}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'beribadah') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group">
+                        <label>Shalat 5 Waktu Wajib (Centang yang dilaksanakan):</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" name="sholatWajib" value="Subuh"> Subuh</label>
+                            <label class="checkbox-label"><input type="checkbox" name="sholatWajib" value="Dzuhur"> Dzuhur</label>
+                            <label class="checkbox-label"><input type="checkbox" name="sholatWajib" value="Ashar"> Ashar</label>
+                            <label class="checkbox-label"><input type="checkbox" name="sholatWajib" value="Maghrib"> Maghrib</label>
+                            <label class="checkbox-label"><input type="checkbox" name="sholatWajib" value="Isya"> Isya</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Shalat Sunnah:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" name="sholatSunnah" value="Duha"> Duha</label>
+                            <label class="checkbox-label"><input type="checkbox" name="sholatSunnah" value="Tahajjud"> Tahajjud</label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Keterangan tambahan (opsional)"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Shalat Wajib</th><th>Shalat Sunnah</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${(d.wajib || []).join(', ') || '-'}</td><td>${(d.sunnah || []).join(', ') || '-'}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'makan-sehat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Menu Makanan Sehat:</label><textarea id="kMenu" rows="3" placeholder="Contoh: Nasi, Sayur Bayam, Telur, Pisang, Susu" required></textarea></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Keterangan tambahan (opsional)"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Menu Makanan</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${d.menu}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'gemar-belajar') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Materi / Bacaan yang Dipelajari:</label><input type="text" id="kMateri" placeholder="Judul buku / Bab pelajaran" required></div>
+                    <div class="form-group"><label>Kesimpulan Belajar:</label><textarea id="kKesimpulan" rows="3" placeholder="Apa rangkuman materi yang kamu pelajari?" required></textarea></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Materi</th><th>Kesimpulan</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${d.materi}</td><td>${d.kesimpulan}</td>`;
+            }
+            else if (type === 'bermasyarakat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jenis Kegiatan Bermasyarakat / Berbuat Baik:</label><textarea id="kKegiatan" rows="3" placeholder="Contoh: Membantu tetangga, Kerja bakti, Menolong teman" required></textarea></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Keterangan tambahan (opsional)"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Kegiatan</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${d.kegiatan}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'tidur-cepat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jam Tidur Malam:</label><input type="time" id="kJamTidur" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Contoh: Tidur nyenyak, tidak main HP"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Jam Tidur</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${getHariIndo(d.tanggal)}, ${d.tanggal}</td><td>${d.jamTidur}</td><td>${d.keterangan || '-'}</td>`;
+            }
+
+            let sortedList = [];
+            snap.forEach(docSnap => {
+                sortedList.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            sortedList.sort((a, b) => (a.tanggal || '').localeCompare(b.tanggal || ''));
+
+            let rows = '';
+            sortedList.forEach(d => {
+                rows += `
+                    <tr>
+                        ${tableRowFunc(d)}
+                        <td>
+                            <button class="btn-danger" onclick="window.hapusData('kategori_${type}', '${d.id}', 'kebiasaan-${type}')">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            contentBody.innerHTML = `
+                <div class="card">
+                    <h3><i class="fa-solid fa-pen-to-square"></i> Input Jurnal Kebiasaan</h3>
+                    <form onsubmit="window.simpanKebiasaanSpesifik(event, '${type}')" style="margin-top:15px;">
+                        ${formFields}
+                        <button type="submit" class="btn-primary" style="margin-top:10px;">
+                            <i class="fa-solid fa-paper-plane"></i> Simpan Kebiasaan
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Input Kebiasaan Kamu</h3>
+                    <div style="overflow-x:auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    ${tableHeaders}
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows || '<tr><td colspan="5" style="text-align:center;">Belum ada catatan yang dimasukkan.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // -------------------------------------------------------------
+        // LOGIKA PENYIMPANAN DATA SISWA (UPSERT TANGGAL SAME)
+        // -------------------------------------------------------------
+        window.simpanKebiasaanSpesifik = async function(e, type) {
+            e.preventDefault();
+            const dateVal = document.getElementById('kDate').value;
+            let payload = {
+                siswaId: currentUser.id,
+                siswaNama: currentUser.name,
+                tanggal: dateVal,
+                created_at: new Date()
+            };
+
+            if (type === 'bangun-pagi') {
+                payload.jam = document.getElementById('kJam').value;
+            } else if (type === 'berolahraga') {
+                payload.jenis = document.getElementById('kJenis').value;
+                payload.durasi = document.getElementById('kDurasi').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'beribadah') {
+                payload.wajib = Array.from(document.querySelectorAll('input[name="sholatWajib"]:checked')).map(c => c.value);
+                payload.sunnah = Array.from(document.querySelectorAll('input[name="sholatSunnah"]:checked')).map(c => c.value);
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'makan-sehat') {
+                payload.menu = document.getElementById('kMenu').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'gemar-belajar') {
+                payload.materi = document.getElementById('kMateri').value;
+                payload.kesimpulan = document.getElementById('kKesimpulan').value;
+            } else if (type === 'bermasyarakat') {
+                payload.kegiatan = document.getElementById('kKegiatan').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'tidur-cepat') {
+                payload.jamTidur = document.getElementById('kJamTidur').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            }
+
+            try {
+                const targetCollection = collection(db, `kategori_${type}`);
+                
+                const checkQuery = query(
+                    targetCollection,
+                    where("siswaId", "==", currentUser.id),
+                    where("tanggal", "==", dateVal)
+                );
+                const existingSnap = await getDocs(checkQuery);
+
+                if (!existingSnap.empty) {
+                    const existingDocId = existingSnap.docs[0].id;
+                    await setDoc(doc(db, `kategori_${type}`, existingDocId), payload);
+                    alert("Data pada tanggal ini sudah ada. Data lama telah diperbarui secara otomatis!");
+                } else {
+                    await addDoc(targetCollection, payload);
+                    alert("Data kebiasaan berhasil disimpan!");
+                }
+
+                window.loadPage(`kebiasaan-${type}`, null, false);
+            } catch (err) {
+                alert("Gagal menyimpan data: " + err.message);
+            }
+        };
+
+        // -------------------------------------------------------------
+        // IMPORT & DOWNLOAD TEMPLATE EXCEL
+        // -------------------------------------------------------------
+        window.downloadTemplateExcel = function() {
+            const template = [
+                { NISN: "0012345601", Nama: "Ahmad Dani", Kelas: "Kelas 5A", Password: "123" },
+                { NISN: "0012345602", Nama: "Siti Rahma", Kelas: "Kelas 5A", Password: "123" }
+            ];
+            const ws = XLSX.utils.json_to_sheet(template);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "DataSiswa");
+            XLSX.writeFile(wb, "Template_Import_Siswa.xlsx");
+        };
+
+        window.importExcelSiswa = function() {
+            const fileInput = document.getElementById('excelFileInput');
+            if (!fileInput.files.length) {
+                alert("Silakan pilih file Excel terlebih dahulu!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+                    if (jsonData.length === 0) {
+                        alert("File Excel kosong!");
+                        return;
+                    }
+
+                    let counter = 0;
+                    for (const row of jsonData) {
+                        if (row.NISN && row.Nama) {
+                            const nisnStr = String(row.NISN).trim();
+                            const passStr = row.Password ? String(row.Password).trim() : '123456';
+
+                            await addDoc(collection(db, "data_siswa"), {
+                                nisn: nisnStr,
+                                nama: String(row.Nama),
+                                kelas: row.Kelas ? String(row.Kelas) : (currentUser.waliKelas || ''),
+                                password: passStr
+                            });
+
+                            try {
+                                const authEmail = getFirebaseEmail('siswa', nisnStr);
+                                await createUserWithEmailAndPassword(auth, authEmail, passStr);
+                            } catch (authErr) {
+                                // Abaikan jika sudah ada
+                            }
+
+                            counter++;
+                        }
+                    }
+
+                    alert(`Berhasil mengimpor ${counter} data siswa dari Excel!`);
+                    window.loadPage('kelola-siswa', null, false);
+                } catch (err) {
+                    alert("Gagal memproses file Excel: " + err.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        };
+
+        // -------------------------------------------------------------
+        // UPDATE PROFIL ADMIN (DENGAN FOTO, NAMA, & PASSWORD)
+        // -------------------------------------------------------------
+        window.updateProfilAdmin = async function(e) {
+            e.preventDefault();
+            const namaBaru = document.getElementById('editAdminNama').value.trim();
+            const passBaru = document.getElementById('editAdminPassBaru').value.trim();
+            const passKonfirm = document.getElementById('editAdminPassKonfirm').value.trim();
+            const fileFoto = document.getElementById('inputFotoAdmin')?.files[0];
+
+            if (passBaru !== "" && passBaru !== passKonfirm) {
+                alert("Konfirmasi password baru tidak cocok!");
+                return;
+            }
+
+            try {
+                const userAuth = auth.currentUser;
+                if (!userAuth) {
+                    alert("Sesi login admin tidak ditemukan. Silakan login kembali!");
+                    return;
+                }
+
+                if (passBaru !== "") {
+                    await updatePassword(userAuth, passBaru);
+                }
+
+                let updatePayload = { nama: namaBaru };
+                if (fileFoto) {
+                    const base64Foto = await convertFileToBase64(fileFoto);
+                    updatePayload.fotoProfil = base64Foto;
+                    currentUser.fotoProfil = base64Foto;
+                }
+
+                await setDoc(doc(db, "pengaturan", "admin_profil"), updatePayload, { merge: true });
+                currentUser.name = namaBaru;
+
+                // Update Tampilan Sidebar
+                document.getElementById('userNameDisplay').innerText = namaBaru;
+                if (currentUser.fotoProfil) {
+                    document.getElementById('userAvatarImg').src = currentUser.fotoProfil;
+                }
+
+                alert("Profil Admin berhasil diperbarui!");
+                document.getElementById('editAdminPassBaru').value = "";
+                document.getElementById('editAdminPassKonfirm').value = "";
+            } catch (err) {
+                if (err.code === 'auth/requires-recent-login') {
+                    alert("Demi keamanan, silakan keluar dan masuk kembali sebelum memperbarui password.");
+                } else {
+                    alert("Gagal memperbarui profil Admin: " + err.message);
+                }
+            }
+        };
+
+        window.simpanDataSekolah = async function(e) {
+            e.preventDefault();
+            try {
+                const schoolDoc = await getDoc(doc(db, "pengaturan", "sekolah"));
+                let dataLama = schoolDoc.exists() ? schoolDoc.data() : {};
+
+                let logoDaerahVal = dataLama.logoDaerah || '';
+                let logoSekolahVal = dataLama.logoSekolah || '';
+
+                const fileLogoDaerah = document.getElementById('schLogoDaerahFile').files[0];
+                if (fileLogoDaerah) {
+                    logoDaerahVal = await convertFileToBase64(fileLogoDaerah);
+                }
+
+                const fileLogoSekolah = document.getElementById('schLogoSekolahFile').files[0];
+                if (fileLogoSekolah) {
+                    logoSekolahVal = await convertFileToBase64(fileLogoSekolah);
+                }
+
+                await setDoc(doc(db, "pengaturan", "sekolah"), {
+                    namaSekolah: document.getElementById('schNama').value,
+                    npsn: document.getElementById('schNpsn').value,
+                    alamat: document.getElementById('schAlamat').value,
+                    kepalaSekolah: document.getElementById('schKepsek').value,
+                    logoDaerah: logoDaerahVal,
+                    logoSekolah: logoSekolahVal
+                });
+
+                alert("Data sekolah dan logo berhasil diperbarui!");
+                window.loadPage('data-sekolah', null, false);
+            } catch (err) {
+                alert("Gagal menyimpan data sekolah: " + err.message);
+            }
+        };
+
+        // -------------------------------------------------------------
+        // TAMPILKAN LAPORAN CETAK JURNAL SISWA
+        // -------------------------------------------------------------
+        window.tampilkanLaporanJurnal = async function() {
+            const nisn = document.getElementById('filterCetakSiswa').value;
+            const filterBulan = document.getElementById('filterCetakBulan').value;
+            const container = document.getElementById('previewHasilJurnal');
+
+            if (!nisn) {
+                alert("Pilih siswa terlebih dahulu!");
+                return;
+            }
+
+            container.innerHTML = `<p style="text-align:center;">Mengambil jurnal kebiasaan siswa...</p>`;
+
+            const schoolDoc = await getDoc(doc(db, "pengaturan", "sekolah"));
+            if (schoolDoc.exists()) {
+                const sch = schoolDoc.data();
+                document.getElementById('printNamaSekolah').innerText = (sch.namaSekolah || 'NAMA SEKOLAH').toUpperCase();
+                document.getElementById('printAlamatSekolah').innerText = sch.alamat || 'Alamat Sekolah Belum Diatur';
+
+                const imgDaerah = document.getElementById('imgLogoDaerah');
+                if (sch.logoDaerah) {
+                    imgDaerah.src = sch.logoDaerah;
+                    imgDaerah.style.display = 'block';
+                } else {
+                    imgDaerah.style.display = 'none';
+                }
+
+                const imgSekolah = document.getElementById('imgLogoSekolah');
+                if (sch.logoSekolah) {
+                    imgSekolah.src = sch.logoSekolah;
+                    imgSekolah.style.display = 'block';
+                } else {
+                    imgSekolah.style.display = 'none';
+                }
+            }
+
+            const sSnap = await getDocs(query(collection(db, "data_siswa"), where("nisn", "==", nisn)));
+            if (sSnap.empty) {
+                container.innerHTML = `<p>Siswa tidak ditemukan.</p>`;
+                return;
+            }
+            const sDoc = sSnap.docs[0];
+            const siswaData = sDoc.data();
+            const siswaId = sDoc.id;
+
+            let bulanLabel = "-";
+            if (filterBulan) {
+                const [year, month] = filterBulan.split('-');
+                const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                bulanLabel = `${monthNames[parseInt(month) - 1]} ${year}`;
+            }
+
+            let htmlOutput = `
+                <div style="margin-bottom:15px; font-weight:600; font-size:1rem;">
+                    <table>
+                        <tr><td style="padding:2px 10px 2px 0;">Nama Siswa</td><td>: ${siswaData.nama}</td></tr>
+                        <tr><td style="padding:2px 10px 2px 0;">NISN</td><td>: ${siswaData.nisn}</td></tr>
+                        <tr><td style="padding:2px 10px 2px 0;">Kelas</td><td>: ${siswaData.kelas || '-'}</td></tr>
+                        <tr><td style="padding:2px 10px 2px 0;">Periode Bulan</td><td>: ${bulanLabel}</td></tr>
+                    </table>
+                </div>
+            `;
+
+            const filterDataBulan = (docList) => {
+                let items = docList;
+                if (filterBulan) {
+                    items = docList.filter(d => {
+                        const data = d.data();
+                        return data.tanggal && data.tanggal.startsWith(filterBulan);
+                    });
+                }
+                return items.sort((a, b) => (a.data().tanggal || '').localeCompare(b.data().tanggal || ''));
+            };
+
+            // 1. BANGUN PAGI
+            const snap1 = await getDocs(query(collection(db, "kategori_bangun-pagi"), where("siswaId", "==", siswaId)));
+            const list1 = filterDataBulan(snap1.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">1. Bangun Pagi</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Jam Bangun Pagi</th></tr></thead><tbody>`;
+            if (list1.length === 0) {
+                htmlOutput += `<tr><td colspan="3" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list1.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr><td style="text-align:center;">${no++}</td><td>${formatTanggalLengkap(data.tanggal)}</td><td>${data.jam}</td></tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 2. BEROLAHRAGA
+            const snap2 = await getDocs(query(collection(db, "kategori_berolahraga"), where("siswaId", "==", siswaId)));
+            const list2 = filterDataBulan(snap2.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">2. Berolahraga</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Jenis Olahraga</th><th>Durasi</th><th>Ket</th></tr></thead><tbody>`;
+            if (list2.length === 0) {
+                htmlOutput += `<tr><td colspan="5" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list2.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr><td style="text-align:center;">${no++}</td><td>${formatTanggalLengkap(data.tanggal)}</td><td>${data.jenis}</td><td>${data.durasi}</td><td>${data.keterangan || '-'}</td></tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 3. BERIBADAH
+            const snap3 = await getDocs(query(collection(db, "kategori_beribadah"), where("siswaId", "==", siswaId)));
+            const list3 = filterDataBulan(snap3.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">3. Beribadah</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Shalat Wajib</th><th>Shalat Sunnah</th><th>Keterangan</th></tr></thead><tbody>`;
+            if (list3.length === 0) {
+                htmlOutput += `<tr><td colspan="5" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list3.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr>
+                        <td style="text-align:center;">${no++}</td>
+                        <td>${formatTanggalLengkap(data.tanggal)}</td>
+                        <td>${(data.wajib || []).join(', ') || '-'}</td>
+                        <td>${(data.sunnah || []).join(', ') || '-'}</td>
+                        <td>${data.keterangan || '-'}</td>
+                    </tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 4. MAKAN SEHAT DAN BERGIZI
+            const snap4 = await getDocs(query(collection(db, "kategori_makan-sehat"), where("siswaId", "==", siswaId)));
+            const list4 = filterDataBulan(snap4.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">4. Makan Sehat dan Bergizi</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Menu Makanan</th><th>Keterangan</th></tr></thead><tbody>`;
+            if (list4.length === 0) {
+                htmlOutput += `<tr><td colspan="4" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list4.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr>
+                        <td style="text-align:center;">${no++}</td>
+                        <td>${formatTanggalLengkap(data.tanggal)}</td>
+                        <td>${data.menu}</td>
+                        <td>${data.keterangan || '-'}</td>
+                    </tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 5. GEMAR BELAJAR
+            const snap5 = await getDocs(query(collection(db, "kategori_gemar-belajar"), where("siswaId", "==", siswaId)));
+            const list5 = filterDataBulan(snap5.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">5. Gemar Belajar</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Materi</th><th>Kesimpulan</th></tr></thead><tbody>`;
+            if (list5.length === 0) {
+                htmlOutput += `<tr><td colspan="4" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list5.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr>
+                        <td style="text-align:center;">${no++}</td>
+                        <td>${formatTanggalLengkap(data.tanggal)}</td>
+                        <td>${data.materi}</td>
+                        <td>${data.kesimpulan}</td>
+                    </tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 6. BERMASYARAKAT
+            const snap6 = await getDocs(query(collection(db, "kategori_bermasyarakat"), where("siswaId", "==", siswaId)));
+            const list6 = filterDataBulan(snap6.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">6. Bermasyarakat</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Kegiatan</th><th>Keterangan</th></tr></thead><tbody>`;
+            if (list6.length === 0) {
+                htmlOutput += `<tr><td colspan="4" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list6.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr>
+                        <td style="text-align:center;">${no++}</td>
+                        <td>${formatTanggalLengkap(data.tanggal)}</td>
+                        <td>${data.kegiatan}</td>
+                        <td>${data.keterangan || '-'}</td>
+                    </tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            // 7. TIDUR CEPAT
+            const snap7 = await getDocs(query(collection(db, "kategori_tidur-cepat"), where("siswaId", "==", siswaId)));
+            const list7 = filterDataBulan(snap7.docs);
+            htmlOutput += `<h4 style="margin-top:15px; color:#4318ff;">7. Tidur Cepat</h4>`;
+            htmlOutput += `<table class="print-journal-table">
+                <thead><tr><th style="width:50px;">Nomor</th><th>Hari / Tanggal</th><th>Jam Tidur</th><th>Keterangan</th></tr></thead><tbody>`;
+            if (list7.length === 0) {
+                htmlOutput += `<tr><td colspan="4" style="text-align:center;">Belum ada data pada bulan ini</td></tr>`;
+            } else {
+                let no = 1;
+                list7.forEach(d => {
+                    const data = d.data();
+                    htmlOutput += `<tr>
+                        <td style="text-align:center;">${no++}</td>
+                        <td>${formatTanggalLengkap(data.tanggal)}</td>
+                        <td>${data.jamTidur}</td>
+                        <td>${data.keterangan || '-'}</td>
+                    </tr>`;
+                });
+            }
+            htmlOutput += `</tbody></table>`;
+
+            container.innerHTML = htmlOutput;
+        };
+
+        // -------------------------------------------------------------
+        // CRUD GURU & SISWA MANUAL
+        // -------------------------------------------------------------
+        window.tambahGuru = async function(e) {
+            e.preventDefault();
+            const nip = document.getElementById('addNipGuru').value.trim();
+            const nama = document.getElementById('addNamaGuru').value.trim();
+            const waliKelas = document.getElementById('addWaliKelasGuru').value.trim();
+            const password = document.getElementById('addPassGuru').value.trim();
+            
+            await addDoc(collection(db, "data_guru"), { nip, nama, waliKelas, password });
+
+            try {
+                const authEmail = getFirebaseEmail('guru', nip);
+                await createUserWithEmailAndPassword(auth, authEmail, password);
+            } catch (err) {
+                // Abaikan jika sudah ada
+            }
+
+            alert("Guru berhasil ditambahkan!");
+            window.loadPage('kelola-guru', null, false);
+        };
+
+        window.tambahSiswa = async function(e) {
+            e.preventDefault();
+            const nisn = document.getElementById('addNisnSiswa').value.trim();
+            const nama = document.getElementById('addNamaSiswa').value.trim();
+            const kelas = document.getElementById('addKelasSiswa').value.trim();
+            const password = document.getElementById('addPassSiswa').value.trim();
+            await addDoc(collection(db, "data_siswa"), { nisn, nama, kelas, password });
+
+            try {
+                const authEmail = getFirebaseEmail('siswa', nisn);
+                await createUserWithEmailAndPassword(auth, authEmail, password);
+            } catch (err) {
+                // Abaikan jika sudah ada
+            }
+
+            alert("Siswa berhasil ditambahkan!");
+            window.loadPage('kelola-siswa', null, false);
+        };
+
+        window.hapusData = async function(collectionName, docId, reloadPageName) {
+            if (confirm("Yakin hapus data ini?")) {
+                await deleteDoc(doc(db, collectionName, docId));
+                alert("Data terhapus.");
+                window.loadPage(reloadPageName, null, false);
+            }
+        };
+
+        // -------------------------------------------------------------
+        // SIDEBAR NAVIGATION BUILDER
+        // -------------------------------------------------------------
+        function renderSidebarMenu() {
+            const navMenu = document.getElementById('navMenu');
+            if (!navMenu || !currentUser) return;
+
+            let menuHTML = `
+                <a href="javascript:void(0)" onclick="window.loadPage('dashboard')" class="nav-item active" id="menu-dashboard">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            `;
+
+            if (currentUser.role === 'admin') {
+                menuHTML += `
+                    <a href="javascript:void(0)" onclick="window.loadPage('kelola-guru')" class="nav-item" id="menu-kelola-guru">
+                        <i class="fa-solid fa-chalkboard-user"></i> Kelola Data Guru
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kelola-siswa')" class="nav-item" id="menu-kelola-siswa">
+                        <i class="fa-solid fa-users"></i> Kelola Data Siswa
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('cetak-kartu')" class="nav-item" id="menu-cetak-kartu">
+                        <i class="fa-solid fa-address-card"></i> Cetak Kartu Siswa
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('cetak-jurnal')" class="nav-item" id="menu-cetak-jurnal">
+                        <i class="fa-solid fa-print"></i> Cetak Jurnal Siswa
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('data-sekolah')" class="nav-item" id="menu-data-sekolah">
+                        <i class="fa-solid fa-school"></i> Data Sekolah
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('profil-admin')" class="nav-item" id="menu-profil-admin">
+                        <i class="fa-solid fa-user-gear"></i> Profil Admin
+                    </a>
+                `;
+            } else if (currentUser.role === 'guru') {
+                menuHTML += `
+                    <a href="javascript:void(0)" onclick="window.loadPage('kelola-siswa')" class="nav-item" id="menu-kelola-siswa">
+                        <i class="fa-solid fa-users"></i> Data & Import Siswa
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('cetak-kartu')" class="nav-item" id="menu-cetak-kartu">
+                        <i class="fa-solid fa-address-card"></i> Cetak Kartu Siswa
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('cetak-jurnal')" class="nav-item" id="menu-cetak-jurnal">
+                        <i class="fa-solid fa-print"></i> Cetak Jurnal Siswa
+                    </a>
+                `;
+            } else if (currentUser.role === 'siswa') {
+                menuHTML += `
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-bangun-pagi')" class="nav-item" id="menu-kebiasaan-bangun-pagi">
+                        <i class="fa-solid fa-sun"></i> 1. Bangun Pagi
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-berolahraga')" class="nav-item" id="menu-kebiasaan-berolahraga">
+                        <i class="fa-solid fa-person-running"></i> 2. Berolahraga
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-beribadah')" class="nav-item" id="menu-kebiasaan-beribadah">
+                        <i class="fa-solid fa-hands-praying"></i> 3. Beribadah
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-makan-sehat')" class="nav-item" id="menu-kebiasaan-makan-sehat">
+                        <i class="fa-solid fa-utensils"></i> 4. Makan Sehat
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-gemar-belajar')" class="nav-item" id="menu-kebiasaan-gemar-belajar">
+                        <i class="fa-solid fa-book-open"></i> 5. Gemar Belajar
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-bermasyarakat')" class="nav-item" id="menu-kebiasaan-bermasyarakat">
+                        <i class="fa-solid fa-people-hold"></i> 6. Bermasyarakat
+                    </a>
+                    <a href="javascript:void(0)" onclick="window.loadPage('kebiasaan-tidur-cepat')" class="nav-item" id="menu-kebiasaan-tidur-cepat">
+                        <i class="fa-solid fa-bed"></i> 7. Tidur Cepat
+                    </a>
+                `;
+            }
+
+            navMenu.innerHTML = menuHTML;
+        }
+
+        // -------------------------------------------------------------
+        // INITIALIZATION & EVENT LISTENERS
+        // -------------------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const formLogin = document.getElementById('formLogin');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnToggle = document.getElementById('btnToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+            if (formLogin) {
+                formLogin.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const role = document.getElementById('roleSelect').value;
+                    const username = document.getElementById('usernameInput').value.trim();
+                    const password = document.getElementById('passwordInput').value.trim();
+
+                    const btnSubmit = formLogin.querySelector('button[type="submit"]');
+                    btnSubmit.disabled = true;
+
+                    try {
+                        let userValid = false;
+                        let userData = null;
+
+                        if (role === 'admin') {
+                            const userCredential = await signInWithEmailAndPassword(auth, username, password);
+                            const user = userCredential.user;
+
+                            // Cek profil data admin jika pernah disimpan
+                            const adminDoc = await getDoc(doc(db, "pengaturan", "admin_profil"));
+                            const adminData = adminDoc.exists() ? adminDoc.data() : {};
+
+                            userValid = true;
+                            userData = { 
+                                name: adminData.nama || user.displayName || user.email.split('@')[0], 
+                                id: user.uid,
+                                fotoProfil: adminData.fotoProfil || null
+                            };
+                        } 
+                        else if (role === 'guru') {
+                            const q = query(collection(db, "data_guru"), where("nip", "==", username), where("password", "==", password));
+                            const querySnapshot = await getDocs(q);
+                            if (!querySnapshot.empty) {
+                                const authEmail = getFirebaseEmail('guru', username);
+                                try {
+                                    await signInWithEmailAndPassword(auth, authEmail, password);
+                                } catch (authError) {
+                                    try {
+                                        await createUserWithEmailAndPassword(auth, authEmail, password);
+                                    } catch (createErr) {
+                                        // Abaikan jika error otentikasi internal
+                                    }
+                                }
+                                userValid = true;
+                                const gData = querySnapshot.docs[0].data();
+                                userData = { 
+                                    name: gData.nama, 
+                                    id: querySnapshot.docs[0].id, 
+                                    waliKelas: gData.waliKelas || '',
+                                    fotoProfil: gData.fotoProfil || null,
+                                    password: gData.password
+                                };
+                            } else {
+                                alert("Password atau Username Guru salah/tidak ditemukan di database!");
+                            }
+                        } 
+                        else if (role === 'siswa') {
+                            const q = query(collection(db, "data_siswa"), where("nisn", "==", username), where("password", "==", password));
+                            const querySnapshot = await getDocs(q);
+                            if (!querySnapshot.empty) {
+                                const authEmail = getFirebaseEmail('siswa', username);
+                                try {
+                                    await signInWithEmailAndPassword(auth, authEmail, password);
+                                } catch (authError) {
+                                    try {
+                                        await createUserWithEmailAndPassword(auth, authEmail, password);
+                                    } catch (createErr) {
+                                        // Abaikan jika akun sudah ada di Firebase Auth
+                                    }
+                                }
+                                userValid = true;
+                                const d = querySnapshot.docs[0].data();
+                                userData = { 
+                                    name: d.nama, 
+                                    id: querySnapshot.docs[0].id, 
+                                    kelas: d.kelas, 
+                                    fotoProfil: d.fotoProfil || null,
+                                    password: d.password
+                                };
+                            } else {
+                                alert("Password atau NISN Siswa salah/tidak ditemukan di database!");
+                            }
+                        }
+
+                        if (userValid) {
+                            currentUser = { 
+                                role, 
+                                name: userData.name, 
+                                id: userData.id, 
+                                kelas: userData.kelas || '', 
+                                waliKelas: userData.waliKelas || '', 
+                                fotoProfil: userData.fotoProfil || null, 
+                                password: userData.password || '' 
+                            };
+
+                            document.getElementById('loginModal').style.setProperty('display', 'none', 'important');
+                            document.getElementById('appContainer').style.display = 'flex';
+                            document.getElementById('userRoleBadge').innerText = role.toUpperCase();
+                            document.getElementById('userNameDisplay').innerText = userData.name;
+                            
+                            const subDetail = document.getElementById('userSubDetail');
+                            const avatarContainer = document.getElementById('sidebarAvatarContainer');
+                            const btnEditProfilSiswa = document.getElementById('btnEditProfilSiswaSidebar');
+                            const btnEditProfilGuru = document.getElementById('btnEditProfilGuruSidebar');
+                            const userAvatarImg = document.getElementById('userAvatarImg');
+
+                            avatarContainer.style.display = 'flex';
+
+                            if (role === 'guru') {
+                                subDetail.innerText = userData.waliKelas ? ("Wali Kelas: " + userData.waliKelas) : "Guru";
+                                btnEditProfilSiswa.style.display = 'none';
+                                btnEditProfilGuru.style.display = 'block';
+                                userAvatarImg.src = userData.fotoProfil || 'https://via.placeholder.com/150?text=Guru';
+                            } else if (role === 'siswa') {
+                                subDetail.innerText = "Kelas: " + (userData.kelas || '-');
+                                btnEditProfilSiswa.style.display = 'block';
+                                btnEditProfilGuru.style.display = 'none';
+                                userAvatarImg.src = userData.fotoProfil || 'https://via.placeholder.com/150?text=Siswa';
+                            } else {
+                                subDetail.innerText = "Administrator";
+                                btnEditProfilSiswa.style.display = 'none';
+                                btnEditProfilGuru.style.display = 'none';
+                                userAvatarImg.src = userData.fotoProfil || 'https://via.placeholder.com/150?text=Admin';
+                            }
+
+                            renderSidebarMenu();
+                            window.history.pushState({ page: 'dashboard' }, '');
+                            window.loadPage('dashboard', null, false);
+                        }
+                    } catch (err) {
+                        alert("Error Login: " + err.message);
+                    } finally {
+                        btnSubmit.disabled = false;
+                    }
+                });
+            }
+
+            if (btnLogout) {
+                btnLogout.addEventListener('click', async () => {
+                    await signOut(auth);
+                    currentUser = null;
+                    document.getElementById('appContainer').style.display = 'none';
+                    document.getElementById('loginModal').style.setProperty('display', 'flex', 'important');
+                });
+            }
+
+            if (btnToggle) {
+                btnToggle.addEventListener('click', () => {
+                    document.getElementById('sidebar').classList.toggle('show');
+                    document.getElementById('sidebarOverlay')?.classList.toggle('show');
+                });
+            }
+
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', () => {
+                    closeSidebarMobile();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
