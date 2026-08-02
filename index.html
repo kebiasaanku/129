@@ -1330,75 +1330,7 @@
                                 </div>
                             </div>
                         `;
-                    } else if (currentUser.role === 'guru') {
-                        // DASHBOARD KHUSUS GURU
-                        const waliKelas = currentUser.waliKelas || '';
-                        let totalSiswaAmpuh = 0;
-                        let totalPersentasePengisian = 0;
-
-                        if (waliKelas) {
-                            // Ambil siswa yang diampu berdasarkan kelas
-                            const qSiswa = query(collection(db, "data_siswa"), where("kelas", "==", waliKelas));
-                            const snapSiswa = await getDocs(qSiswa);
-                            totalSiswaAmpuh = snapSiswa.size;
-
-                            if (totalSiswaAmpuh > 0) {
-                                const categoriesList = ['bangun-pagi', 'berolahraga', 'beribadah', 'makan-sehat', 'gemar-belajar', 'bermasyarakat', 'tidur-cepat'];
-                                const [yr, mo] = currentMonthStr.split('-');
-                                const totalHariBulan = new Date(parseInt(yr), parseInt(mo), 0).getDate();
-                                
-                                // Target total entri = (Jumlah Siswa) x (7 Kebiasaan) x (Jumlah Hari Bulan Berjalan)
-                                const totalTargetPengisian = totalSiswaAmpuh * categoriesList.length * totalHariBulan;
-                                let totalPengisianSiswaCurrentMonth = 0;
-
-                                for (const docSiswa of snapSiswa.docs) {
-                                    const siswaId = docSiswa.id;
-                                    for (const cat of categoriesList) {
-                                        const qCat = query(collection(db, `kategori_${cat}`), where("siswaId", "==", siswaId));
-                                        const catSnap = await getDocs(qCat);
-                                        catSnap.forEach(docCat => {
-                                            const d = docCat.data();
-                                            if (d.tanggal && d.tanggal.startsWith(currentMonthStr)) {
-                                                totalPengisianSiswaCurrentMonth++;
-                                            }
-                                        });
-                                    }
-                                }
-
-                                if (totalTargetPengisian > 0) {
-                                    totalPersentasePengisian = Math.round((totalPengisianSiswaCurrentMonth / totalTargetPengisian) * 100);
-                                    if (totalPersentasePengisian > 100) totalPersentasePengisian = 100;
-                                }
-                            }
-                        }
-
-                        contentBody.innerHTML = `
-                            <div class="card" style="background: linear-gradient(135deg, #4318ff, #707ebe); color:white;">
-                                <h2>Selamat Datang di ${school.namaSekolah || 'Aplikasi 7 Kebiasaan'}!</h2>
-                                <p style="margin-top:5px; opacity:0.9;">
-                                    Halo <strong>${currentUser.name}</strong> (GURU${waliKelas ? ' - Wali Kelas ' + waliKelas : ''}). Mari wujudkan generasi anak Indonesia hebat dan berkarakter.
-                                </p>
-                            </div>
-
-                            <div class="stats-grid">
-                                <div class="stat-card">
-                                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-                                    <div>
-                                        <h2 style="font-size:1.6rem;">${totalSiswaAmpuh}</h2>
-                                        <p style="color:#707ebe; font-size:0.85rem;">Total Siswa Diampu (${waliKelas || 'Tanpa Kelas'})</p>
-                                    </div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
-                                    <div>
-                                        <h2 style="font-size:1.6rem;">${totalPersentasePengisian}%</h2>
-                                        <p style="color:#707ebe; font-size:0.85rem;">Perkembangan Pengisian Bulan Ini</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
                     } else {
-                        // DASHBOARD UNTUK ADMIN
                         const guruSnap = await getDocs(collection(db, "data_guru"));
                         const siswaSnap = await getDocs(collection(db, "data_siswa"));
 
@@ -1406,7 +1338,7 @@
                             <div class="card" style="background: linear-gradient(135deg, #4318ff, #707ebe); color:white;">
                                 <h2>Selamat Datang di ${school.namaSekolah || 'Aplikasi 7 Kebiasaan'}!</h2>
                                 <p style="margin-top:5px; opacity:0.9;">
-                                    Halo <strong>${currentUser.name}</strong> (ADMINISTRATOR). Mari wujudkan generasi anak Indonesia hebat dan berkarakter.
+                                    Halo <strong>${currentUser.name}</strong> (${currentUser.role.toUpperCase()}${currentUser.waliKelas ? ' - Wali Kelas ' + currentUser.waliKelas : ''}). Mari wujudkan generasi anak Indonesia hebat dan berkarakter.
                                 </p>
                             </div>
 
@@ -2691,8 +2623,420 @@
         // -------------------------------------------------------------
         async function renderHalamanKebiasaanDinamis(type) {
             const contentBody = document.getElementById('contentBody');
-            contentBody.innerHTML = `<div class="card"><p>Halaman kebiasaan ${type} sedang dimuat...</p></div>`;
+            
+            const q = query(
+                collection(db, `kategori_${type}`), 
+                where("siswaId", "==", currentUser.id)
+            );
+            const snap = await getDocs(q);
+
+            let formFields = '';
+            let tableHeaders = '';
+            let tableRowFunc = null;
+
+            if (type === 'bangun-pagi') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jam Bangun Pagi:</label><input type="time" id="kJam" required></div>
+                `;
+                tableHeaders = `<th>Tanggal</th><th>Jam Bangun</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.jam} WITA/WIB</td>`;
+            } 
+            else if (type === 'berolahraga') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jenis Olahraga:</label><input type="text" id="kJenis" placeholder="Contoh: Lari / Senam" required></div>
+                    <div class="form-group"><label>Durasi:</label><input type="text" id="kDurasi" placeholder="Contoh: 30 Menit" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Catatan opsional"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Jenis Olahraga</th><th>Durasi</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.jenis}</td><td>${d.durasi}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'beribadah') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group">
+                        <label>Shalat Wajib:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" value="Subuh" class="check-wajib"> Subuh</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Dzuhur" class="check-wajib"> Dzuhur</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Ashar" class="check-wajib"> Ashar</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Maghrib" class="check-wajib"> Maghrib</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Isya" class="check-wajib"> Isya</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Shalat Sunnah:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" value="Dhuha" class="check-sunnah"> Dhuha</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Tahajud" class="check-sunnah"> Tahajud</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Rawatib" class="check-sunnah"> Rawatib</label>
+                            <label class="checkbox-label"><input type="checkbox" value="Witir" class="check-sunnah"> Witir</label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Catatan opsional"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Shalat Wajib</th><th>Shalat Sunnah</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${(d.wajib || []).join(', ') || '-'}</td><td>${(d.sunnah || []).join(', ') || '-'}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'makan-sehat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Menu Makanan Sehat:</label><input type="text" id="kMenu" placeholder="Contoh: Nasi, Sayur Bayam, Ikan, Buah Apel" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Catatan opsional"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Menu Makanan</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.menu}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'gemar-belajar') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Materi / Pelajaran Disukai:</label><input type="text" id="kMateri" placeholder="Contoh: Matematika Pecahan" required></div>
+                    <div class="form-group"><label>Kesimpulan Belajar Hari Ini:</label><textarea id="kKesimpulan" rows="2" placeholder="Tuliskan hal penting yang dipelajari..." required></textarea></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Materi</th><th>Kesimpulan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.materi}</td><td>${d.kesimpulan}</td>`;
+            }
+            else if (type === 'bermasyarakat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Kegiatan Bermasyarakat / Sosial:</label><input type="text" id="kKegiatan" placeholder="Contoh: Kerja Bakti Lingkungan / Membantu Tetangga" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Catatan opsional"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Kegiatan</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.kegiatan}</td><td>${d.keterangan || '-'}</td>`;
+            }
+            else if (type === 'tidur-cepat') {
+                formFields = `
+                    <div class="form-group"><label>Tanggal:</label><input type="date" id="kDate" value="${todayStr}" required></div>
+                    <div class="form-group"><label>Jam Tidur Malam:</label><input type="time" id="kJamTidur" required></div>
+                    <div class="form-group"><label>Keterangan:</label><input type="text" id="kKet" placeholder="Catatan opsional"></div>
+                `;
+                tableHeaders = `<th>Hari / Tanggal</th><th>Jam Tidur</th><th>Keterangan</th>`;
+                tableRowFunc = (d) => `<td>${formatTanggalLengkap(d.tanggal)}</td><td>${d.jamTidur}</td><td>${d.keterangan || '-'}</td>`;
+            }
+
+            let rows = "";
+            snap.forEach(d => {
+                const data = d.id ? { id: d.id, ...d.data() } : d.data();
+                rows += `
+                    <tr>
+                        ${tableRowFunc(data)}
+                        <td>
+                            <button class="btn-danger" onclick="window.hapusData('kategori_${type}', '${d.id}', 'kebiasaan-${type}')">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            contentBody.innerHTML = `
+                <div class="card">
+                    <h3>Tambah Catatan Kebiasaan</h3>
+                    <form onsubmit="window.simpanKebiasaan(event, '${type}')" style="margin-top:15px;">
+                        ${formFields}
+                        <button type="submit" class="btn-primary" style="margin-top:10px;"><i class="fa-solid fa-plus"></i> Simpan Catatan</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Riwayat Catatan Kebiasaan Saya</h3>
+                    <div style="overflow-x:auto;">
+                        <table class="custom-table">
+                            <thead><tr>${tableHeaders}<th>Aksi</th></tr></thead>
+                            <tbody>${rows || '<tr><td colspan="5" style="text-align:center;">Belum ada riwayat catatan kebiasaan.</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
         }
+
+        // SIMPAN KEBIASAAN SISWA
+        window.simpanKebiasaan = async function(e, type) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            let payload = {
+                siswaId: currentUser.id,
+                nisn: currentUser.nisn,
+                namaSiswa: currentUser.name,
+                tanggal: document.getElementById('kDate').value,
+                createdAt: new Date().toISOString()
+            };
+
+            if (type === 'bangun-pagi') {
+                payload.jam = document.getElementById('kJam').value;
+            } else if (type === 'berolahraga') {
+                payload.jenis = document.getElementById('kJenis').value;
+                payload.durasi = document.getElementById('kDurasi').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'beribadah') {
+                const wajibArr = Array.from(document.querySelectorAll('.check-wajib:checked')).map(c => c.value);
+                const sunnahArr = Array.from(document.querySelectorAll('.check-sunnah:checked')).map(c => c.value);
+                payload.wajib = wajibArr;
+                payload.sunnah = sunnahArr;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'makan-sehat') {
+                payload.menu = document.getElementById('kMenu').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'gemar-belajar') {
+                payload.materi = document.getElementById('kMateri').value;
+                payload.kesimpulan = document.getElementById('kKesimpulan').value;
+            } else if (type === 'bermasyarakat') {
+                payload.kegiatan = document.getElementById('kKegiatan').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            } else if (type === 'tidur-cepat') {
+                payload.jamTidur = document.getElementById('kJamTidur').value;
+                payload.keterangan = document.getElementById('kKet').value;
+            }
+
+            showLoading("Menyimpan catatan kebiasaan...");
+            try {
+                await addDoc(collection(db, `kategori_${type}`), payload);
+                alert("Catatan kebiasaan berhasil disimpan!");
+                window.loadPage(`kebiasaan-${type}`, null, false);
+            } catch (err) {
+                alert("Gagal menyimpan data: " + err.message);
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // HAPUS DATA UMUM (FIRESTORE)
+        window.hapusData = async function(collectionName, id, refreshPageName) {
+            if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                showLoading("Menghapus data...");
+                try {
+                    await deleteDoc(doc(db, collectionName, id));
+                    alert("Data berhasil dihapus!");
+                    window.loadPage(refreshPageName, null, false);
+                } catch (err) {
+                    alert("Gagal menghapus data: " + err.message);
+                } finally {
+                    hideLoading();
+                }
+            }
+        };
+
+        // TAMBAH GURU MANUAL OLEH ADMIN
+        window.tambahGuru = async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('addUsernameGuru').value.trim();
+            const nip = document.getElementById('addNipGuru').value.trim();
+            const nama = document.getElementById('addNamaGuru').value.trim();
+            const waliKelas = document.getElementById('addWaliKelasGuru').value.trim();
+            const password = document.getElementById('addPassGuru').value.trim();
+
+            showLoading("Menambahkan data guru...");
+            try {
+                await addDoc(collection(db, "data_guru"), {
+                    username,
+                    nip,
+                    nama,
+                    waliKelas,
+                    password
+                });
+                alert("Guru berhasil ditambahkan!");
+                window.loadPage('kelola-guru', null, false);
+            } catch (err) {
+                alert("Gagal menambahkan guru: " + err.message);
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // TAMBAH SISWA MANUAL
+        window.tambahSiswa = async function(e) {
+            e.preventDefault();
+            const nisn = document.getElementById('addNisnSiswa').value.trim();
+            const nama = document.getElementById('addNamaSiswa').value.trim();
+            const kelas = document.getElementById('addKelasSiswa').value.trim();
+            const password = document.getElementById('addPassSiswa').value.trim();
+
+            showLoading("Menambahkan data siswa...");
+            try {
+                await addDoc(collection(db, "data_siswa"), {
+                    nisn,
+                    nama,
+                    kelas,
+                    password
+                });
+                alert("Siswa berhasil ditambahkan!");
+                window.loadPage('kelola-siswa', null, false);
+            } catch (err) {
+                alert("Gagal menambahkan siswa: " + err.message);
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // IMPORT SISWA DARI FILE EXCEL
+        window.downloadTemplateExcel = function() {
+            const dataTemplate = [
+                ["NISN", "NAMA", "KELAS", "PASSWORD"],
+                ["1234567890", "Budi Santoso", "Kelas 5A", "123456"],
+                ["1234567891", "Siti Aminah", "Kelas 5A", "123456"]
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(dataTemplate);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Template Siswa");
+            XLSX.writeFile(wb, "Template_Data_Siswa.xlsx");
+        };
+
+        window.importExcelSiswa = function() {
+            const fileInput = document.getElementById('excelFileInput');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Pilih file Excel terlebih dahulu!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            showLoading("Membaca data Excel...");
+
+            reader.onload = async function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheet];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    if (jsonData.length <= 1) {
+                        alert("File Excel kosong atau format tidak sesuai!");
+                        return;
+                    }
+
+                    showLoading(`Mengunggah ${jsonData.length - 1} data siswa...`);
+
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row.length >= 4) {
+                            const nisn = String(row[0]).trim();
+                            const nama = String(row[1]).trim();
+                            const kelas = String(row[2]).trim();
+                            const password = String(row[3]).trim();
+
+                            if (nisn && nama) {
+                                await addDoc(collection(db, "data_siswa"), {
+                                    nisn,
+                                    nama,
+                                    kelas,
+                                    password
+                                });
+                            }
+                        }
+                    }
+
+                    alert("Import data siswa via Excel berhasil!");
+                    window.loadPage('kelola-siswa', null, false);
+                } catch (err) {
+                    alert("Gagal mengimpor Excel: " + err.message);
+                } finally {
+                    hideLoading();
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        };
+
+        // UPDATE PROFIL ADMIN
+        window.updateProfilAdmin = async function(e) {
+            e.preventDefault();
+            const namaBaru = document.getElementById('editAdminNama').value.trim();
+            const passBaru = document.getElementById('editAdminPassBaru').value.trim();
+            const passKonfirm = document.getElementById('editAdminPassKonfirm').value.trim();
+            const fileFoto = document.getElementById('inputFotoAdmin').files[0];
+
+            if (passBaru !== "" && passBaru !== passKonfirm) {
+                alert("Konfirmasi password baru tidak cocok!");
+                return;
+            }
+
+            showLoading("Memperbarui profil admin...");
+            try {
+                let adminPayload = { nama: namaBaru };
+
+                if (fileFoto) {
+                    const base64Foto = await convertFileToBase64(fileFoto);
+                    adminPayload.fotoProfil = base64Foto;
+                    currentUser.fotoProfil = base64Foto;
+                }
+
+                if (passBaru !== "") {
+                    if (auth.currentUser) {
+                        await updatePassword(auth.currentUser, passBaru);
+                    }
+                }
+
+                await setDoc(doc(db, "pengaturan", "admin"), adminPayload, { merge: true });
+                currentUser.name = namaBaru;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                document.getElementById('userNameDisplay').innerText = namaBaru;
+                if (currentUser.fotoProfil) {
+                    document.getElementById('userAvatarImg').src = currentUser.fotoProfil;
+                }
+
+                alert("Profil Admin berhasil diperbarui!");
+                window.loadPage('dashboard', null, false);
+            } catch (err) {
+                if (err.code === 'auth/requires-recent-login') {
+                    alert("Demi keamanan, silakan keluar dan masuk kembali sebelum memperbarui password.");
+                } else {
+                    alert("Gagal memperbarui profil admin: " + err.message);
+                }
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // SIMPAN DATA SEKOLAH & KOP
+        window.simpanDataSekolah = async function(e) {
+            e.preventDefault();
+            const namaSekolah = document.getElementById('schNama').value.trim();
+            const npsn = document.getElementById('schNpsn').value.trim();
+            const alamat = document.getElementById('schAlamat').value.trim();
+            const kepalaSekolah = document.getElementById('schKepsek').value.trim();
+            const nipKepalaSekolah = document.getElementById('schNipKepsek').value.trim();
+
+            const fileDaerah = document.getElementById('schLogoDaerahFile').files[0];
+            const fileSekolah = document.getElementById('schLogoSekolahFile').files[0];
+
+            showLoading("Menyimpan data sekolah...");
+
+            try {
+                const schoolDoc = await getDoc(doc(db, "pengaturan", "sekolah"));
+                let existingData = schoolDoc.exists() ? schoolDoc.data() : {};
+
+                let payload = {
+                    namaSekolah,
+                    npsn,
+                    alamat,
+                    kepalaSekolah,
+                    nipKepalaSekolah,
+                    logoDaerah: existingData.logoDaerah || '',
+                    logoSekolah: existingData.logoSekolah || ''
+                };
+
+                if (fileDaerah) {
+                    payload.logoDaerah = await convertFileToBase64(fileDaerah);
+                }
+                if (fileSekolah) {
+                    payload.logoSekolah = await convertFileToBase64(fileSekolah);
+                }
+
+                await setDoc(doc(db, "pengaturan", "sekolah"), payload, { merge: true });
+                alert("Data Sekolah dan Logo Kop Surat berhasil disimpan!");
+                window.loadPage('data-sekolah', null, false);
+            } catch (err) {
+                alert("Gagal menyimpan data sekolah: " + err.message);
+            } finally {
+                hideLoading();
+            }
+        };
     </script>
 </body>
 </html>
